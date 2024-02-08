@@ -21,7 +21,7 @@ public class Main {
         {
 //            sendEmail.sendRegMail(userName, email);
             sendEmail.sendLoginMail(userName, email);
-            //      sendEmail.sendBookingMail();
+                  sendEmail.sendBookingMail();
             System.out.println("Mail sent");
         }
     }
