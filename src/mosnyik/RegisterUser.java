@@ -99,7 +99,7 @@ public class RegisterUser {
             switch(selection){
                 case 1->{
                     System.out.println("You can schedule Appointment now");
-//                    System.out.print("Enter your email: ");
+                    System.out.print("Enter your : ");
 //                    String email = scanner.next();
 //                    System.out.print("Enter your password: ");
 //                    String password = scanner.next();
