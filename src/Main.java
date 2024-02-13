@@ -39,7 +39,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         RegisterUser reg = new RegisterUser();
-        SendEmail sendMail = new SendEmail();
+//        SendEmail sendMail = new SendEmail();
         final Scanner scanner = new Scanner(System.in);
         boolean flag = true;
 
@@ -68,7 +68,7 @@ public class Main {
                 }
                 case 2 -> {
                     flag = false;
-                    System.out.println("You want Register");
+                    System.out.println("You want Login");
                     reg.login();
                 }
                 case 3 ->{
