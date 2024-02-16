@@ -9,8 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="sendgrid.java" level="project" />
     <orderEntry type="library" name="io.github.cdimascio.dotenv.java" level="project" />
-    <orderEntry type="library" name="ejlchina.okhttps.gson" level="project" />
-    <orderEntry type="library" name="eduworks.json.ld" level="project" />
-    <orderEntry type="library" name="json4s.ast_2.12" level="project" />
+    <orderEntry type="library" name="google.code.gson" level="project" />
   </component>
 </module>

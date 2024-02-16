@@ -10,6 +10,8 @@ import java.util.Scanner;
 public class RegisterUser {
 
     mosnyik.SendEmail sendMail = new mosnyik.SendEmail();
+
+    final Scanner scanner = new Scanner(System.in);
     ArrayList<String> userName = new ArrayList<String>();
    public ArrayList<String> email = new ArrayList<String>();
    public ArrayList<String> password = new ArrayList<String>();
@@ -19,27 +21,27 @@ public class RegisterUser {
     ArrayList<String> appointmentDate = new ArrayList<String>();
     ArrayList<String> appointmentTime = new ArrayList<String>();
 
-    final Scanner scanner = new Scanner(System.in);
+
+
+//     if (!userName.matches("[a-zA-Z]+")) {
+//            System.out.println("Invalid userName format. Please enter a single name without spaces.");
+//            continue;
+//        }
 
     public void addUser() throws Exception {
+        System.out.println("Please enter your userName");
+        String userName = scanner.next();
+        System.out.println("Please enter your email");
+        String email= scanner.next();
 
         while( true ){
-            System.out.println("Please enter your userName");
-            String userName = scanner.next();
-            if (!userName.matches("[a-zA-Z]+")) {
-                System.out.println("Invalid userName format. Please enter a single name without spaces.");
-                continue;
-            }
-            System.out.println("Please enter your email");
-            String email= scanner.next();
-
             System.out.println("Please enter your password");
             String password =scanner.next();
             System.out.println("Please confirm your password");
             String confirmPassword =scanner.next();
 
             if(password.equals(confirmPassword)) {
-                this.userName.add(String.valueOf(this.userName));
+                this.userName.add(String.valueOf(userName));
                 this.email.add(email);
                 this.password.add(password);
                 System.out.println("You have registered as " + userName);
@@ -82,8 +84,8 @@ public class RegisterUser {
 
             if(this.email.get(i).equals(email) && this.password.get(i).equals(password) ){
                 flag = true;
-
-//                sendMail.sendLoginMail(userName.get(i), email);
+                System.out.println(this.userName.get(i));
+                sendMail.sendLoginMail(this.userName.get(i), email);
                 break;
             }
         }
