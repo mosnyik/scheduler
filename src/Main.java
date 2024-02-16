@@ -39,7 +39,6 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         RegisterUser reg = new RegisterUser();
-//        SendEmail sendMail = new SendEmail();
         final Scanner scanner = new Scanner(System.in);
         boolean flag = true;
 
