@@ -88,9 +88,12 @@ public class RegisterUser {
                 flag = true;
                 System.out.println(this.userName.get(i));
                 sendMail.sendLoginMail(this.userName.get(i), email);
-                if(!this.appointmentDate.isEmpty())
+                if(!this.appointmentDate.isEmpty()){
                     checkForReminder(this.appointmentDate.get(i));
-                System.out.println("No appointments yet");
+
+                }else{
+                    System.out.println("No appointments yet");
+                }
                 break;
             }
         }
