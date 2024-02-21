@@ -38,7 +38,7 @@ public class SendEmail {
     private  String ip = "";
     private  String city = "";
     private  String country = "";
-    private  String masterEmail = "mosnyik@gmail.com";
+    private final String masterEmail = "mosnyik@gmail.com";
 
     public void getUserLocation(){
     try {
@@ -82,7 +82,7 @@ public class SendEmail {
 
 
     public void sendRegMail(String userName, String email) {
-        Email from = new Email("mosnyik@gmail.com");
+        Email from = new Email(masterEmail);
         String subject = "Welcome to Scheduler!";
         Email to = new Email(email);
         Content content = new Content("text/plain", "Dear " + userName + ","+" \n" +
@@ -166,7 +166,7 @@ public class SendEmail {
         }
     }
     public void sendBookingMail() {
-        Email from = new Email("mosnyik@gmail.com");
+        Email from = new Email(masterEmail);
         String subject = "You have booked an appointment";
         Email to = new Email("backenddude@gmail.com");
         Content content = new Content("text/plain", "Dear [Client's Name],\n" +
