@@ -24,11 +24,8 @@ public class RegisterUser {
 
     String formattedDate = "";
     String formattedTime = "";
-
-//     if (!userName.matches("[a-zA-Z]+")) {
-//            System.out.println("Invalid userName format. Please enter a single name without spaces.");
-//            continue;
-//        }
+    String userEmail = "";
+    String userAppointment = "";
 
     public void addUser() throws Exception {
         System.out.println("Please enter your userName");
@@ -87,9 +84,12 @@ public class RegisterUser {
             if(this.email.get(i).equals(email) && this.password.get(i).equals(password) ){
                 flag = true;
                 System.out.println(this.userName.get(i));
+                userEmail = this.email.get(i);
                 sendMail.sendLoginMail(this.userName.get(i), email);
                 if(!this.appointmentDate.isEmpty()){
-                    checkForReminder(this.appointmentDate.get(i));
+                    userAppointment = this.appointmentContent.get(i);
+                    System.out.println("You can check for your appointments");
+
 
                 }else{
                     System.out.println("No appointments yet");
@@ -103,42 +103,6 @@ public class RegisterUser {
 
             throw new RuntimeException("Invalid email or password. Please try again.");
         }
-
-        }
-
-
-    }
-
-    public void checkForReminder(String reminderTime) throws Exception {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        // Parse the user input into a LocalDate object
-        LocalDate date = LocalDate.parse(reminderTime, formatter);
-        // Get the current date
-        LocalDate currentDate = LocalDate.now();
-        formattedDate = date.format(formatter);
-
-        // Compare the input date with the current date
-        if ( currentDate.isEqual(date)) {
-            System.out.println("The appointment date is today.");
-            System.out.println("Today's date is: " + currentDate);
-            System.out.println("Your appointment date is: " + formattedDate);
-
-
-        } else if (currentDate.isBefore(date)) {
-
-            System.out.println("The day is has not reached.");
-            System.out.println("Today's date is: " + currentDate);
-            System.out.println("Your appointment date is: " + date);
-
-        } else if(currentDate.isAfter(date)){
-            System.out.println("You have missed your appointment.");
-            System.out.println("Today's date is: " + currentDate);
-            System.out.println("Your appointment date is: " + date);
-
-        } else{
-            System.out.println("I don't know what is wrong with your appointment");
-            System.out.println("Today's date is: " + currentDate);
-            System.out.println("Your appointment date is: " + date);
 
         }
 
@@ -166,11 +130,10 @@ public class RegisterUser {
         switch(selection){
             case 1->{
                 System.out.println("You can schedule Appointment now");
-                System.out.print("Enter your appointment title : ");
+                System.out.println("Enter your appointment title : ");
                 String title = scanner.next();
-                System.out.print("Enter your appointment description: ");
+                System.out.println("Enter your appointment description: ");
                 String content = scanner.next();
-
 
                 while(true){
                     System.out.print("Enter appointment date (dd-MM-yyyy): ");
@@ -179,68 +142,30 @@ public class RegisterUser {
                     try {
                         // Parse the user input into a LocalDate object
                         LocalDate date = LocalDate.parse(dateInput, formatter);
-                        // Get the current date
-                        LocalDate currentDate = LocalDate.now();
                         formattedDate = date.format(formatter);
-
-                        // Compare the input date with the current date
-                        if ( currentDate.isEqual(date)) {
-                            System.out.println("The appointment date is today.");
-                            System.out.println("Today's date is: " + currentDate);
-                            System.out.println("Your appointment date is: " + formattedDate);
-
-
-                        } else if (currentDate.isBefore(date)) {
-
-                            System.out.println("The day is has not reached.");
-                            System.out.println("Today's date is: " + currentDate);
-                            System.out.println("Your appointment date is: " + date);
-
-                        } else if(currentDate.isAfter(date)){
-                            System.out.println("You have missed your appointment.");
-                            System.out.println("Today's date is: " + currentDate);
-                            System.out.println("Your appointment date is: " + date);
-
-                        } else{
-                            System.out.println("I don't know what is wrong with your appointment");
-                            System.out.println("Today's date is: " + currentDate);
-                            System.out.println("Your appointment date is: " + date);
-
-                        }
-
-                        break;
 
                     } catch (Exception e) {
                         // Handle parsing errors
                         System.out.println("Invalid date format. Please enter the date in dd-MM-yyyy format.");
                     };
-
+                    break;
                 };
                 while (true) {
-                    System.out.print("Enter a time (eg 1:30 PM): ");
+                    System.out.print("Enter a time (eg 01:30 PM): ");
                     String timeInput = scanner.nextLine();
 
-                    DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("h:mm a", Locale.US);
+                    DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("hh:mm a", Locale.US);
 
 
                     try {
                         // Parse the user input into a LocalTime object
+                        System.out.println("The appointment time is " + timeInput );
                         LocalTime time = LocalTime.parse(timeInput, formatTime);
-                        // Get the current time
-                        LocalTime currentTime = LocalTime.now();
                         formattedTime = time.format(formatTime);
-
-                        // Compare the input time with the current time
-                        if (time.equals(currentTime)) {
-                            System.out.println("It is your appointment time.");
-                        } else if (time.isBefore(currentTime)) {
-                            System.out.println("You have missed your appointment.");
-                        } else {
-                            System.out.println("You have some time before your appointment.");
-                        }
 
                         break;
                     } catch (DateTimeParseException e) {
+                        System.out.println("The appointment time is wrong format" + timeInput );
                         // Handle parsing errors
                         System.out.println("Invalid time format. Please enter the time in hh:mm:a format.");
                     }
@@ -249,40 +174,23 @@ public class RegisterUser {
                 this.appointmentContent.add(content);
                 this.appointmentDate.add(this.formattedDate);
                 this.appointmentTime.add(this.formattedTime);
+                userAppointment = content;
+                sendMail.sendBookingMail(this.userEmail,this.formattedDate,this.formattedTime, this);
                 return;
             }
             case 2 ->{
                 System.out.println("List of appointments");
+                listAppointments();
                 return;
             }
             default -> System.exit(0);
         }
     }
 
-    public void checkAppointment() throws Exception {
-        System.out.println("Please enter your userName");
-        String userName = scanner.next();
-        System.out.println("Please enter your email");
-        String email= scanner.next();
-
-        while( true ){
-            System.out.println("Please enter your password");
-            String password =scanner.next();
-            System.out.println("Please confirm your password");
-            String confirmPassword =scanner.next();
-
-            if(password.equals(confirmPassword)) {
-                this.userName.add(String.valueOf(userName));
-                this.email.add(email);
-                this.password.add(password);
-                System.out.println("You have registered as " + userName);
-                System.out.println("When you want to login, use " + email + " " + "and your password");
-                sendMail.sendRegMail(userName, email);
-                this.login();
-                break;
-            }
-            System.out.println("Your password does not match!!");
-
+    public void listAppointments() throws Exception {
+        System.out.println("List out the appointments");
+        for (int i = 0; i < this.appointmentTitle.size(); i++) {
+            System.out.println(i + 1 + " " + this.appointmentTitle.get(i) + "-" + this.appointmentContent.get(i));
         }
     }
 

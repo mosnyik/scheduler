@@ -40,6 +40,7 @@ public class SendEmail {
     private  String country = "";
     private final String masterEmail = "mosnyik@gmail.com";
 
+
     public void getUserLocation(){
     try {
         // Make a request to an IP geolocation service
@@ -73,13 +74,6 @@ public class SendEmail {
     }
 
 }
-    public void printCurrentDate(){
-    System.out.println("Current Date and Time: " + dateAndTime );
-        System.out.println("Current Login os name: " + osName);
-        System.out.println("Current Login os version: " + osVersion);
-
-}
-
 
     public void sendRegMail(String userName, String email) {
         Email from = new Email(masterEmail);
@@ -165,18 +159,18 @@ public class SendEmail {
             ex.printStackTrace();
         }
     }
-    public void sendBookingMail() {
+    public void sendBookingMail( String email, String appointmentDate, String appointmentTime, RegisterUser reg) {
         Email from = new Email(masterEmail);
         String subject = "You have booked an appointment";
-        Email to = new Email("backenddude@gmail.com");
-        Content content = new Content("text/plain", "Dear [Client's Name],\n" +
-                "\n" +
-                "Thank you for booking an appointment with us. We are excited to assist you with your [type of appointment] on [date] at [time]. Below are the details of your appointment:\n" +
+        Email to = new Email(email);
+//        "Dear " + userName + "
+        Content content = new Content("text/plain", "Welcome Back!! \n" +
+                "Thank you for booking an appointment with us. We are excited to assist you with your " + reg.userAppointment + " appointment " + " scheduled for " + appointmentDate + " at " + appointmentTime+". Below are the details of your appointment:\n" +
                 "\n" +
                 "Appointment Details:\n" +
-                "Date: [Date of the appointment]\n" +
-                "Time: [Time of the appointment]\n" +
-                "Location: [Location/address, if applicable]\n" +
+                "Date:  " + appointmentDate + "\n" +
+                "Time: " + appointmentTime + "\n" +
+                "Location: "+ city + "," + country +"\n" +
                 "\n" +
                 "If you need to make any changes to your appointment, please let us know as soon as possible. You can reply to this email.\n" +
                 "\n" +
@@ -195,10 +189,46 @@ public class SendEmail {
             request.setBody(mail.build());
             Response response = sg.api(request);
             System.out.println(response.getStatusCode());
-            System.out.println(response.getBody());
-            System.out.println(response.getHeaders());
+
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
+
+    public void sendBookingReminderMail( String email, String appointmentDate, String appointmentTime, RegisterUser reg) {
+        Email from = new Email(masterEmail);
+        String subject = "You have booked an appointment";
+        Email to = new Email(email);
+
+        Content content = new Content("text/plain", "Welcome Back!! \n" +
+                "This is a reminder that you have " + reg.userAppointment + " appointment " + " scheduled for " + appointmentDate + " at " + appointmentTime+". Below are the details of your appointment:\n" +
+                "\n" +
+                "Appointment Details:\n" +
+                "Date:  " + appointmentDate + "\n" +
+                "Time: " + appointmentTime + "\n" +
+                "Location: "+ city + "," + country +"\n" +
+                "\n" +
+                "If you need to make any changes to your appointment, please let us know as soon as possible. You can reply to this email.\n" +
+                "\n" +
+                "We look forward to meeting with you and providing our services. If you have any questions or concerns, feel free to reach out to us.\n" +
+                "\n" +
+                "Best regards,\n" +
+                "Scheduler");
+        Mail mail = new Mail(from, subject, to, content);
+
+
+        SendGrid sg = new SendGrid(apiKey);
+        Request request = new Request();
+        try {
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            request.setBody(mail.build());
+            Response response = sg.api(request);
+            System.out.println(response.getStatusCode());
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
 }

@@ -28,20 +28,22 @@
 //}
 
 import mosnyik.RegisterUser;
-import mosnyik.SendEmail;
+import mosnyik.ReminderService;
+
 
 import java.util.*;
 
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
 public class Main {
 
     public static void main(String[] args) throws Exception {
 
+        ReminderService reminderService = new ReminderService();
+
+
         RegisterUser reg = new RegisterUser();
         final Scanner scanner = new Scanner(System.in);
         boolean flag = true;
-
+        reminderService.startReminderService(reg);
         while (flag) {
             // clear the screen before staring this code
             if (System.getProperty("os.name").contains("Windows")) {
