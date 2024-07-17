@@ -16,7 +16,6 @@ public class RegisterUser {
     ArrayList<String> userName = new ArrayList<String>();
    public ArrayList<String> email = new ArrayList<String>();
    public ArrayList<String> password = new ArrayList<String>();
-//    ArrayList<String> confirmPassword = new ArrayList<String>();
     ArrayList<String> appointmentTitle = new ArrayList<String>();
     ArrayList<String> appointmentContent = new ArrayList<String>();
     ArrayList<String> appointmentDate = new ArrayList<String>();
@@ -109,8 +108,103 @@ public class RegisterUser {
 
     }
 
+//    public void scheduleAppointment() throws Exception {
+//        // clear the screen before staring this code
+//        if (System.getProperty("os.name").contains("Windows")) {
+//            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+//
+//        } else {
+//            // Clear console screen on Unix-like systems (e.g., macOS, Linux)
+//            System.out.print("\033[H\033[2J");
+//            System.out.flush();
+//        }
+//
+//        System.out.println("\t\t                                 ");
+//        System.out.println("\t\t _______________________________");
+//        System.out.println("\t\t|                               |");
+//        System.out.println("\t\t|    SCHEDULE AN APPOINTMENT    |");
+//        System.out.println("\t\t|_______________________________|");
+//        System.out.println(" ");
+//        System.out.println("1. Schedule New Appointment  \t 2. See Appointment List \t 3. Exit \n ");
+//        byte selection = scanner.nextByte();
+////        string response = scanner.nextLine();
+//
+//
+//        switch(selection){
+//
+//            case 1->{
+//                System.out.println("You can schedule Appointment now");
+//
+//                System.out.println("Enter your appointment title : ");
+//                String title = scanner.nextLine();
+//                try (Scanner scanner = new Scanner(title)) {
+//                    // Change scanner to read one character at a time
+//                    scanner.useDelimiter("\n");
+//                    // Read and discard the first character 'S'
+//                    scanner.next();
+//                    // Check if the rest of the line is "\n"
+//                    assertLineEnd("\n", scanner.nextLine());
+//                }
+//
+//
+//                System.out.println("Enter your appointment description: ");
+//                String content = scanner.next();
+//
+//                while(true){
+//                    System.out.println("Enter appointment date (dd-MM-yyyy): ");
+//                    String dateInput = scanner.next();
+//                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+//                    try {
+//                        // Parse the user input into a LocalDate object
+//                        LocalDate date = LocalDate.parse(dateInput, formatter);
+//                        formattedDate = date.format(formatter);
+//
+//                    } catch (Exception e) {
+//                        // Handle parsing errors
+//                        System.out.println("Invalid date format. Please enter the date in dd-MM-yyyy format.");
+//                    };
+//                    break;
+//                };
+//                while (true) {
+//                    System.out.print("Enter a time (eg 01:30 PM): ");
+//                    String timeInput = scanner.nextLine();
+//
+//                    DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("hh:mm a", Locale.US);
+//
+//
+//                    try {
+//                        // Parse the user input into a LocalTime object
+//                        System.out.println("The appointment time is " + timeInput );
+//                        LocalTime time = LocalTime.parse(timeInput, formatTime);
+//                        formattedTime = time.format(formatTime);
+//
+//                        break;
+//                    } catch (DateTimeParseException e) {
+//                        System.out.println("The appointment time is wrong format" + timeInput );
+//                        // Handle parsing errors
+//                        System.out.println("Invalid time format. Please enter the time in hh:mm:a format.");
+//                    }
+//                }
+//                this.appointmentTitle.add(title);
+//                this.appointmentContent.add(content);
+//                this.appointmentDate.add(this.formattedDate);
+//                this.appointmentTime.add(this.formattedTime);
+//                userAppointment = content;
+//                sendMail.sendBookingMail(this.userEmail,this.formattedDate,this.formattedTime, this);
+//                return;
+//            }
+//            case 2 ->{
+//                System.out.println("List of appointments");
+//                listAppointments();
+//                return;
+//            }
+//            default -> System.exit(0);
+//        }
+//
+//    }
+
     public void scheduleAppointment() throws Exception {
-        // clear the screen before staring this code
+        // Clear the screen before starting this code
         if (System.getProperty("os.name").contains("Windows")) {
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
         } else {
@@ -127,58 +221,70 @@ public class RegisterUser {
         System.out.println(" ");
         System.out.println("1. Schedule New Appointment  \t 2. See Appointment List \t 3. Exit \n ");
         byte selection = scanner.nextByte();
-        switch(selection){
-            case 1->{
-                System.out.println("You can schedule Appointment now");
-                System.out.println("Enter your appointment title : ");
-                String title = scanner.next();
-                System.out.println("Enter your appointment description: ");
-                String content = scanner.next();
+        scanner.nextLine(); // Consume the leftover newline
 
-                while(true){
-                    System.out.print("Enter appointment date (dd-MM-yyyy): ");
-                    String dateInput = scanner.next();
+        switch (selection) {
+            case 1 -> {
+                System.out.println("You can schedule Appointment now");
+
+                System.out.println("Enter your appointment title: ");
+                String title = scanner.nextLine();
+                title = title + "\n";
+                try (Scanner lineScanner = new Scanner(title.trim() )) {
+                    // Change scanner to use a newline as the delimiter
+                    lineScanner.useDelimiter("\n");
+                    // Read and discard the first character 'S'
+                    lineScanner.next();
+                    // Check if the rest of the line ends with a newline character
+                    assertLineEnd( lineScanner.nextLine());
+                }
+
+
+                System.out.println("Enter your appointment description: ");
+                String content = scanner.nextLine();
+
+                while (true) {
+                    System.out.println("Enter appointment date (dd-MM-yyyy): ");
+                    String dateInput = scanner.nextLine();
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                     try {
                         // Parse the user input into a LocalDate object
                         LocalDate date = LocalDate.parse(dateInput, formatter);
                         formattedDate = date.format(formatter);
-
+                        break;
                     } catch (Exception e) {
                         // Handle parsing errors
                         System.out.println("Invalid date format. Please enter the date in dd-MM-yyyy format.");
-                    };
-                    break;
-                };
+                    }
+                }
+
                 while (true) {
                     System.out.print("Enter a time (eg 01:30 PM): ");
                     String timeInput = scanner.nextLine();
-
                     DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("hh:mm a", Locale.US);
-
 
                     try {
                         // Parse the user input into a LocalTime object
-                        System.out.println("The appointment time is " + timeInput );
+                        System.out.println("The appointment time is " + timeInput);
                         LocalTime time = LocalTime.parse(timeInput, formatTime);
                         formattedTime = time.format(formatTime);
-
                         break;
                     } catch (DateTimeParseException e) {
-                        System.out.println("The appointment time is wrong format" + timeInput );
+                        System.out.println("The appointment time is wrong format: " + timeInput);
                         // Handle parsing errors
-                        System.out.println("Invalid time format. Please enter the time in hh:mm:a format.");
+                        System.out.println("Invalid time format. Please enter the time in hh:mm a format.");
                     }
                 }
+
                 this.appointmentTitle.add(title);
                 this.appointmentContent.add(content);
                 this.appointmentDate.add(this.formattedDate);
                 this.appointmentTime.add(this.formattedTime);
                 userAppointment = content;
-                sendMail.sendBookingMail(this.userEmail,this.formattedDate,this.formattedTime, this);
+                sendMail.sendBookingMail(this.userEmail, this.formattedDate, this.formattedTime, this);
                 return;
             }
-            case 2 ->{
+            case 2 -> {
                 System.out.println("List of appointments");
                 listAppointments();
                 return;
@@ -186,7 +292,27 @@ public class RegisterUser {
             default -> System.exit(0);
         }
     }
+//    private static void assertLineEnd(String expected, String actual) {
+//        // Add a newline character to the expected string for comparison
+//        String expectedWithNewline = expected + "\n";
+//
+//        // Check if the actual string ends with a newline character
+//        if (!actual.equals(expectedWithNewline)) {
+//            throw new AssertionError("Expected \"" + expectedWithNewline + "\" but got \"" + actual + "\"");
+//        }
+//        System.out.println("Assertion passed: The string ends with a newline as expected.");
+//    }
 
+    private static void assertLineEnd(String actual) {
+        // Define the expected newline character
+        String expected = "\n";
+
+        // Check if the actual string ends with the newline character
+        if (!actual.endsWith(expected)) {
+            throw new AssertionError("Expected the string to end with a newline character but got \"" + actual + "\"");
+        }
+        System.out.println("Assertion passed: The string ends with a newline character as expected.");
+    }
     public void listAppointments() throws Exception {
         System.out.println("List out the appointments");
         for (int i = 0; i < this.appointmentTitle.size(); i++) {
@@ -195,3 +321,7 @@ public class RegisterUser {
     }
 
 }
+
+
+
+

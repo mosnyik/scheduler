@@ -24,6 +24,8 @@ public class SendEmail {
     private final Dotenv dotenv = Dotenv.configure().load();
     private final String apiKey = dotenv.get("API_KEY");
 
+    private final String ipinfoApiToken = dotenv.get("IPINFO_API_TOKEN");
+
     // Get the current date and time
     private final LocalDateTime currentDateTime = LocalDateTime.now();
 
@@ -41,39 +43,65 @@ public class SendEmail {
     private final String masterEmail = "mosnyik@gmail.com";
 
 
-    public void getUserLocation(){
-    try {
-        // Make a request to an IP geolocation service
-        URL url = new URL("https://ipapi.co/json/");
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
+//    public void getUserLocation(){
+//    try {
+//        // Make a request to an IP geolocation service
+//        URL url = new URL("https://ip-api.com/json/");
+//        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//        connection.setRequestMethod("GET");
+//
+//        // Read the response
+//        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+//        StringBuilder response = new StringBuilder();
+//        String line;
+//        while ((line = reader.readLine()) != null) {
+//            response.append(line);
+//        }
+//        reader.close();
+//
+//        // Parse the JSON response using Gson
+//        Gson gson = new Gson();
+//        JsonObject locationData = gson.fromJson(response.toString(), JsonObject.class);
+//
+//        // Extract the desired fields
+//         ip = locationData.get("ip").getAsString();
+//        city = locationData.get("city").getAsString();
+//        country = locationData.get("country_name").getAsString();
+//
+//        // Close the connection
+//        connection.disconnect();
+//    } catch (IOException e) {
+//        e.printStackTrace();
+//    }
+//
+//}
 
-        // Read the response
-        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        StringBuilder response = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            response.append(line);
+    public void getUserLocation() {
+        try {
+            URL url = new URL("https://ipinfo.io/json?token=" + ipinfoApiToken);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(connection.getInputStream())
+            );
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+            Gson gson = new Gson();
+            JsonObject locationData = gson.fromJson(response.toString(), JsonObject.class);
+
+            ip = locationData.get("ip").getAsString();
+            city = locationData.get("city").getAsString();
+            country = locationData.get("country").getAsString();
+            connection.disconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        reader.close();
-
-        // Parse the JSON response using Gson
-        Gson gson = new Gson();
-        JsonObject locationData = gson.fromJson(response.toString(), JsonObject.class);
-
-        // Extract the desired fields
-         ip = locationData.get("ip").getAsString();
-        city = locationData.get("city").getAsString();
-        country = locationData.get("country_name").getAsString();
-
-        // Close the connection
-        connection.disconnect();
-    } catch (IOException e) {
-        e.printStackTrace();
-
     }
 
-}
 
     public void sendRegMail(String userName, String email) {
         Email from = new Email(masterEmail);
