@@ -3,10 +3,10 @@ package mosnyik;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
+import java.text.SimpleDateFormat;
 
 public class RegisterUser {
 
@@ -131,45 +131,48 @@ public class RegisterUser {
             case 1->{
                 System.out.println("You can schedule Appointment now");
                 System.out.println("Enter your appointment title : ");
-                String title = scanner.next();
+                scanner.nextLine();
+                String title = scanner.nextLine();
                 System.out.println("Enter your appointment description: ");
-                String content = scanner.next();
+                String content = scanner.nextLine();
 
                 while(true){
                     System.out.print("Enter appointment date (dd-MM-yyyy): ");
-                    String dateInput = scanner.next();
+                    String dateInput = scanner.nextLine();
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                     try {
                         // Parse the user input into a LocalDate object
                         LocalDate date = LocalDate.parse(dateInput, formatter);
                         formattedDate = date.format(formatter);
-
+                        break;
                     } catch (Exception e) {
                         // Handle parsing errors
                         System.out.println("Invalid date format. Please enter the date in dd-MM-yyyy format.");
                     };
-                    break;
+
                 };
-                while (true) {
+                while(true){
                     System.out.print("Enter a time (eg 01:30 PM): ");
+
                     String timeInput = scanner.nextLine();
 
-                    DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("hh:mm a", Locale.US);
-
-
+                    DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("hh:mm a");
                     try {
-                        // Parse the user input into a LocalTime object
-                        System.out.println("The appointment time is " + timeInput );
+                        // Parse the user input into a LocalDate object
+                        new SimpleDateFormat("hh.mm aa", Locale.US);
                         LocalTime time = LocalTime.parse(timeInput, formatTime);
                         formattedTime = time.format(formatTime);
-
                         break;
-                    } catch (DateTimeParseException e) {
-                        System.out.println("The appointment time is wrong format" + timeInput );
+                    } catch (Exception e) {
+                        System.out.println("The appointment time " + timeInput + "is wrong format" + e.getLocalizedMessage());
                         // Handle parsing errors
                         System.out.println("Invalid time format. Please enter the time in hh:mm:a format.");
-                    }
-                }
+                    };
+
+
+                };
+
+
                 this.appointmentTitle.add(title);
                 this.appointmentContent.add(content);
                 this.appointmentDate.add(this.formattedDate);
@@ -190,7 +193,7 @@ public class RegisterUser {
     public void listAppointments() throws Exception {
         System.out.println("List out the appointments");
         for (int i = 0; i < this.appointmentTitle.size(); i++) {
-            System.out.println(i + 1 + " " + this.appointmentTitle.get(i) + "-" + this.appointmentContent.get(i));
+            System.out.println(i + 1 + " " + this.appointmentTitle.get(i) + "-" + this.appointmentDate.get(i) + " " + this.appointmentTime.get(i));
         }
     }
 
